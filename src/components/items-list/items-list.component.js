@@ -12,15 +12,42 @@ const Item = (props) => {
 
   function deleteItem() {
     let id = item._id
-    axios
-      .post('http://localhost:4000/mernTemp/delete/' + id).then((response) => {
-        dispatch({ type: 'SET_ALL_ITEMS', payload: response.data })
+
+    let firebaseID
+    axios.get('https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json').then((response) => {
+      console.log(response)
+      let dataObj = Object.entries(response.data)
+      console.log(dataObj)
+      dataObj.forEach(item => {
+        if (item[1]._id === id) {
+          console.log(item)
+          firebaseID = item[0]
+        }
+      })
+      console.log(firebaseID)
+    }).then(() => {
+
+      
+      axios
+      .delete(`https://next-ts-img-crud-default-rtdb.firebaseio.com/branch/${firebaseID}.json`).then(() => {
+        dispatch({ type: 'CLEAR_ITEM' })
       })
       .catch(function (error) {
         console.log(error)
       })
-      dispatch({ type: 'CLEAR_ITEM' })
-      props.nav('/')
+      .finally(() => {
+        let url = 'https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json'
+        axios.get(url).then((response) => {
+          let objData
+          response.data && (objData = Object.values(response.data))
+        
+          dispatch({ type: 'SET_ALL_ITEMS', payload: objData })
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+      })
+    })
   }
 
   return (

@@ -8,7 +8,7 @@ const itemRoutes = express.Router()
 let port = process.env.PORT || 4000
 let imgKey = process.env.UNSPLASH_API_KEY
 
-let Item = require('./src/models/item.model')
+// let Item = require('./src/models/item.model')
 const { default: axios } = require('axios')
 
 app.use(cors())
@@ -38,63 +38,63 @@ itemRoutes.route('/').get(function (req, res) {
 
 itemRoutes.route('/item/:id').get(function (req, res) {
   let id = req.params.id
-  Item.findById(id, function (error, item) {
-    res.json({message: 'Item retrieved', item: item})
+  let url = `https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json`
+  let allData = []
+  axios.get(url).then((response) => {
+    allData = Object.values(response.data)
+  }).then(() => {
+    allData.forEach((item) => {
+      if (item._id === id) {
+        res.json({ message: 'Item retrieved', item})
+      }
+    })
   })
 })
 
 itemRoutes.route('/update/:id').post(function (req, res) {
-  Item.findById(req.params.id, function (error, item) {
-    if (!item) res.status(404).send('No data with that ID found')
-    else {
-      const { description, comment, rating, imageURL, photographer } = req.body
-      item.description = description
-      item.comment = comment
-      item.rating = rating
-      item.imageURL = imageURL
-      item.photographer = photographer
-    }
-    item.save()
-      .then(() => resAllWithMessage('Updated!', res))
-      .catch((error) => {
-        res.status(400).send('Update not possible')
-      })
-  })
+  console.log(req.params.id)
+  
+  
+  // Item.findById(req.params.id, function (error, item) {
+  //   if (!item) res.status(404).send('No data with that ID found')
+  //   else {
+  //     const { description, comment, rating, imageURL, photographer } = req.body
+  //     item.description = description
+  //     item.comment = comment
+  //     item.rating = rating
+  //     item.imageURL = imageURL
+  //     item.photographer = photographer
+  //   }
+  //   item.save()
+  //     .then(() => resAllWithMessage('Updated!', res))
+  //     .catch((error) => {
+  //       res.status(400).send('Update not possible')
+  //     })
+  // })
 })
 
 itemRoutes.route('/add').post(function (req, res) {
-  // const { description, comment, rating, imageURL, photographer } = req.body
-  console.log(req.body)
   let url = 'https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json'
-
-  axios.post(url, req.body).then((response) => {
+  axios.post(url, req.body)
+  .then((response) => {
     console.log(response)
     let objData
+
     axios.get(url).then((response) => {
       objData = Object.values(response.data)
-      // console.log(objData)
       resAllWithMessage('Successfully added!', res, objData)
     })
   })
-
-
-
-  // item
-  //   .save()
-  //   .then(() => resAllWithMessage('Added!', res))
-  //   .catch((error) => {
-  //     res.status(400).send('Adding new item failed')
-  //   })
 })
 
-itemRoutes.route('/delete/:id').post(function (req, res) {
-  let _id = req.params.id
-  Item.deleteOne({ _id })
-    .then(() => resAllWithMessage('Deleted!', res))
-    .catch((error) => {
-      res.status(400).send('Deleting new item failed')
-    })
-})
+// itemRoutes.route('/delete/:id').post(function (req, res) {
+//   let _id = req.params.id
+//   Item.deleteOne({ _id })
+//     .then(() => resAllWithMessage('Deleted!', res))
+//     .catch((error) => {
+//       res.status(400).send('Deleting new item failed')
+//     })
+// })
 
 itemRoutes.route('/image/').get(function (req, res) {
   let url = `https://api.unsplash.com/photos/random/?client_id=${imgKey}`

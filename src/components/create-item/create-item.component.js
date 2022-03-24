@@ -32,13 +32,24 @@ function CreateItem() {
     })
   }
 
+  function createItemWithUID(input) {
+    console.log(input)
+    let temp = '0'
+    for ( let i = 0; i <= 20; i++ ) {
+      temp = temp + String(Math.floor(Math.random() * 9))
+    }
+    console.log(temp)
+    input._id = temp
+    console.log(input)
+  }
   // data handling
   function onSubmit(e) {
     e.preventDefault()
     // send form data to server 'create' route
+    createItemWithUID(tempItem)
+
     axios.post('http://localhost:4000/mernTemp/add', tempItem).then((response) => {
       let objData = Object.values(response.data)
-      console.log(objData[1])
       dispatch({ type: 'SET_ALL_ITEMS', payload: objData[1] })
     })
     dispatch({ type: 'CLEAR_ITEM' })

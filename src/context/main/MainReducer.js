@@ -14,8 +14,7 @@ export const mainReducer = (state, action) => {
             }
         case "SET_EDITED_ITEM":
             // log server status message
-            console.log(action.payload.message)
-            let item = action.payload.item
+            let item = action.payload
             let editItem = {
                 description: item.description,
                 comment: item.comment,

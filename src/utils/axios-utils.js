@@ -10,28 +10,24 @@ export function useAxiosOnLoad() {
   useEffect(() => {
     axios.get(url).then((response) => {
         let objData = Object.values(response.data)
-        console.log(objData)
-
         dispatch({ type: 'SET_ALL_ITEMS', payload: objData })
       })
       .catch(function (error) {
         console.log(error)
       })
   }, [dispatch, url])
-}
+} 
 
 export function useAxiosOnEditLoad() {
-  const { dispatch } = useContext(MainContext)
+  const { state: { items }, dispatch } = useContext(MainContext)
   let { id } = useParams()
   useEffect(() => {
-    axios
-      .get('http://localhost:4000/mernTemp/item/' + id).then((response) => {
-        dispatch({ type: 'SET_EDITED_ITEM', payload: response.data })
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-  }, [dispatch, id])
+    items.forEach(item => {
+      if (item._id === id) {
+        dispatch({ type: 'SET_EDITED_ITEM', payload: item })
+      }
+    })
+  }, [dispatch, id, items])
 }
 
 // END of document
