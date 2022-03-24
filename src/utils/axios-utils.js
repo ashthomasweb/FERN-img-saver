@@ -6,14 +6,18 @@ import { useParams } from 'react-router-dom'
 // from items-list
 export function useAxiosOnLoad() {
   const { dispatch } = useContext(MainContext)
+  let url = 'https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json'
   useEffect(() => {
-    axios.get('http://localhost:4000/mernTemp/').then((response) => {
-        dispatch({ type: 'SET_ALL_ITEMS', payload: response.data })
+    axios.get(url).then((response) => {
+        let objData = Object.values(response.data)
+        console.log(objData)
+
+        dispatch({ type: 'SET_ALL_ITEMS', payload: objData })
       })
       .catch(function (error) {
         console.log(error)
       })
-  }, [dispatch])
+  }, [dispatch, url])
 }
 
 export function useAxiosOnEditLoad() {

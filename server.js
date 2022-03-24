@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 const itemRoutes = express.Router()
 let port = process.env.PORT || 4000
 let imgKey = process.env.UNSPLASH_API_KEY
@@ -16,26 +16,24 @@ app.use(bodyParser.json())
 
 // change database variable to project appropriate name
 // find and replace acorss all files
-mongoose.connect('mongodb://127.0.0.1:27017/mernTemp', { useNewUrlParser: true })
-const connection = mongoose.connection
+// mongoose.connect('mongodb://127.0.0.1:27017/mernTemp', { useNewUrlParser: true })
+// const connection = mongoose.connection
 
-connection.once('open', function () {
-  console.log('Local MongoDB database connection successfully established here')
-})
+// connection.once('open', function () {
+//   console.log('Local MongoDB database connection successfully established here')
+// })
 
-function resAllWithMessage(message, res) {
-  Item.find({}, (error, items) => {
-    if (error) {
-      console.log(error)
-    } else {
-      res.json({message, items})
-    }
-  })
+function resAllWithMessage(message, res, objData) {
+  res.json({message, objData})
 }
 
 itemRoutes.route('/').get(function (req, res) {
   console.log('home route')
-  resAllWithMessage('Home routed success!', res)
+  axios.get('https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json').then((response) => {
+    let objData = response.data
+    console.log(objData)
+    resAllWithMessage('Firebase Realtime DB retrieval success!', res)
+  })
 })
 
 itemRoutes.route('/item/:id').get(function (req, res) {

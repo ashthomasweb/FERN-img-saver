@@ -8,10 +8,10 @@ export const mainReducer = (state, action) => {
             }
         case "SET_ALL_ITEMS":
             // log server status message
-            console.log(action.payload.message)
+            console.log(action.payload)
             return {
                 ...state,
-                items: action.payload.items
+                items: action.payload
             }
         case "SET_EDITED_ITEM":
             // log server status message

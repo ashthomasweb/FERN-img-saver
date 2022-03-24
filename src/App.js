@@ -22,10 +22,9 @@ function App() {
       <ItemsList />
       <br />
       <br />
-      <p style={{textAlign: 'center' }}>Template v3 brings basic API routing and image saving incorporated.</p>
-      <p style={{textAlign: 'center' }}>This template brings full CRUD operations into a modular architecture,<br />and incorporates a Reducer/Context, Axios, and Router w/ useParams HOC wrapper.</p>
+      <p style={{textAlign: 'center' }}>Template v4 is connected from the UI to a firebase data store.</p>
       <ul style={{marginLeft: '41%'}}>
-        <li>MongoDB Local</li>
+        <li>Firebase Firestore</li>
         <li>Node</li>
         <li>Express</li>
         <li>Axios</li>
