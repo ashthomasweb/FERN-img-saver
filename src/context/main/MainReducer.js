@@ -8,7 +8,6 @@ export const mainReducer = (state, action) => {
             }
         case "SET_ALL_ITEMS":
             // log server status message
-            console.log(action.payload)
             return {
                 ...state,
                 items: action.payload

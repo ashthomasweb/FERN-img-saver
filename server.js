@@ -63,19 +63,28 @@ itemRoutes.route('/update/:id').post(function (req, res) {
 })
 
 itemRoutes.route('/add').post(function (req, res) {
-  const { description, comment, rating, imageURL, photographer } = req.body
-  let item = new Item()
-  item.description = description
-  item.comment = comment
-  item.rating = rating
-  item.imageURL = imageURL
-  item.photographer = photographer
-  item
-    .save()
-    .then(() => resAllWithMessage('Added!', res))
-    .catch((error) => {
-      res.status(400).send('Adding new item failed')
+  // const { description, comment, rating, imageURL, photographer } = req.body
+  console.log(req.body)
+  let url = 'https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json'
+
+  axios.post(url, req.body).then((response) => {
+    console.log(response)
+    let objData
+    axios.get(url).then((response) => {
+      objData = Object.values(response.data)
+      // console.log(objData)
+      resAllWithMessage('Successfully added!', res, objData)
     })
+  })
+
+
+
+  // item
+  //   .save()
+  //   .then(() => resAllWithMessage('Added!', res))
+  //   .catch((error) => {
+  //     res.status(400).send('Adding new item failed')
+  //   })
 })
 
 itemRoutes.route('/delete/:id').post(function (req, res) {

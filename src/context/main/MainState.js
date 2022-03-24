@@ -10,8 +10,7 @@ const MainState = (props) => {
     tempItem: {
       description: '',
       comment: '',
-      priority: '',
-      completed: false,
+      rating: '',
       imageURL: '',
       photographer: ''
     },

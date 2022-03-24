@@ -57,7 +57,7 @@ function ItemsList(props) {
   const { state: { items } } = useContext(MainContext)
 
   function itemList() {
-    return items.map((itemData, i) => <Item {...props} item={itemData} key={i} />)
+    return items && items.map((itemData, i) => <Item {...props} item={itemData} key={i} />)
   }
 
   return (

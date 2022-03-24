@@ -37,7 +37,9 @@ function CreateItem() {
     e.preventDefault()
     // send form data to server 'create' route
     axios.post('http://localhost:4000/mernTemp/add', tempItem).then((response) => {
-      dispatch({ type: 'SET_ALL_ITEMS', payload: response.data })
+      let objData = Object.values(response.data)
+      console.log(objData[1])
+      dispatch({ type: 'SET_ALL_ITEMS', payload: objData[1] })
     })
     dispatch({ type: 'CLEAR_ITEM' })
   }
