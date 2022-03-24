@@ -23,7 +23,7 @@ function EditItem(props) {
   }
 
   function changeRating(e) {
-    tempItem.priority = e.target.value
+    tempItem.rating = e.target.value
     dispatch({ type: 'ONCHANGE_RATING', payload: tempItem })
   }
 
@@ -31,9 +31,43 @@ function EditItem(props) {
   function onSubmit(e) {
     e.preventDefault()
     // send form data to server 'update' route and re-route to 'home'
-    axios.post('http://localhost:4000/mernTemp/update/' + id, tempItem).then((response) => {
-        dispatch({ type: 'SET_ALL_ITEMS', payload: response.data })
+
+    let firebaseID
+    axios.get('https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json').then((response) => {
+      console.log(response)
+      let dataObj = Object.entries(response.data)
+      console.log(dataObj)
+      dataObj.forEach(item => {
+        if (item[1]._id === id) {
+          console.log(item)
+          firebaseID = item[0]
+        }
       })
+      console.log(firebaseID)
+    }).then(() => {
+      axios
+      .patch(`https://next-ts-img-crud-default-rtdb.firebaseio.com/branch/${firebaseID}.json`, tempItem).then(() => {
+        dispatch({ type: 'CLEAR_ITEM' })
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+      .finally(() => {
+        let url = 'https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json'
+        axios.get(url).then((response) => {
+          let objData
+          response.data && (objData = Object.values(response.data))
+        
+          dispatch({ type: 'SET_ALL_ITEMS', payload: objData })
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+      })
+    })
+
+
+
   }
 
   // custom hook retrieves and sets item data by id, via params, on edit component mount
