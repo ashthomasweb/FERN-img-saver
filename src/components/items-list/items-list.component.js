@@ -15,19 +15,13 @@ const Item = (props) => {
 
     let firebaseID
     axios.get('https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json').then((response) => {
-      console.log(response)
       let dataObj = Object.entries(response.data)
-      console.log(dataObj)
       dataObj.forEach(item => {
         if (item[1]._id === id) {
-          console.log(item)
           firebaseID = item[0]
         }
       })
-      console.log(firebaseID)
     }).then(() => {
-
-      
       axios
       .delete(`https://next-ts-img-crud-default-rtdb.firebaseio.com/branch/${firebaseID}.json`).then(() => {
         dispatch({ type: 'CLEAR_ITEM' })
@@ -40,7 +34,6 @@ const Item = (props) => {
         axios.get(url).then((response) => {
           let objData
           response.data && (objData = Object.values(response.data))
-        
           dispatch({ type: 'SET_ALL_ITEMS', payload: objData })
         })
         .catch(function (error) {

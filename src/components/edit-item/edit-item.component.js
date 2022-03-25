@@ -30,20 +30,15 @@ function EditItem(props) {
   // data handling
   function onSubmit(e) {
     e.preventDefault()
-    // send form data to server 'update' route and re-route to 'home'
 
     let firebaseID
     axios.get('https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json').then((response) => {
-      console.log(response)
       let dataObj = Object.entries(response.data)
-      console.log(dataObj)
       dataObj.forEach(item => {
         if (item[1]._id === id) {
-          console.log(item)
           firebaseID = item[0]
         }
       })
-      console.log(firebaseID)
     }).then(() => {
       axios
       .patch(`https://next-ts-img-crud-default-rtdb.firebaseio.com/branch/${firebaseID}.json`, tempItem).then(() => {
@@ -57,7 +52,6 @@ function EditItem(props) {
         axios.get(url).then((response) => {
           let objData
           response.data && (objData = Object.values(response.data))
-        
           dispatch({ type: 'SET_ALL_ITEMS', payload: objData })
         })
         .catch(function (error) {
@@ -65,9 +59,6 @@ function EditItem(props) {
         })
       })
     })
-
-
-
   }
 
   // custom hook retrieves and sets item data by id, via params, on edit component mount
@@ -77,12 +68,11 @@ function EditItem(props) {
     <div style={{ margin: '10px auto', width: '95vw' }}>
       <h3 style={{ textAlign: 'center' }}>Update Item</h3>
 
-      { imageURL && (
+      { imageURL && 
           <div style={{ textAlign: 'center', width: '40vw', margin: '0 auto', position: 'relative'}}>
             <img src={imageURL} style={{width: '100%', position: 'relative'}} alt='no alt yet'/>
             <p>Photo by {photographer}, courtesy of Unsplash API</p>
           </div>
-        )
       }
 
       <form onSubmit={onSubmit}>

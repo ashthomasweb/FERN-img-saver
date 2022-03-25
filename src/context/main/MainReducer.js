@@ -7,13 +7,11 @@ export const mainReducer = (state, action) => {
                 user: user
             }
         case "SET_ALL_ITEMS":
-            // log server status message
             return {
                 ...state,
                 items: action.payload
             }
         case "SET_EDITED_ITEM":
-            // log server status message
             let item = action.payload
             let editItem = {
                 description: item.description,

@@ -33,21 +33,18 @@ function CreateItem() {
   }
 
   function createItemWithUID(input) {
-    console.log(input)
     let temp = '0'
     for ( let i = 0; i <= 20; i++ ) {
       temp = temp + String(Math.floor(Math.random() * 9))
     }
-    console.log(temp)
     input._id = temp
-    console.log(input)
   }
+
   // data handling
   function onSubmit(e) {
     e.preventDefault()
     // send form data to server 'create' route
     createItemWithUID(tempItem)
-
     axios.post('http://localhost:4000/mernTemp/add', tempItem).then((response) => {
       let objData = Object.values(response.data)
       dispatch({ type: 'SET_ALL_ITEMS', payload: objData[1] })
@@ -58,12 +55,12 @@ function CreateItem() {
   return (
     <div style={{ margin: '10px auto', width: '95vw' }}>
       <h3 style={{ textAlign: 'center' }}>Create New Item</h3>
-      { imageURL && (
+
+      { imageURL && 
           <div style={{ textAlign: 'center', width: '40vw', margin: '0 auto', position: 'relative'}}>
             <img src={imageURL} style={{width: '100%', position: 'relative'}} alt='no alt yet'/>
             <p>Photo by {photographer}, courtesy of Unsplash API</p>
           </div>
-        )
       }
 
       <form onSubmit={onSubmit}>

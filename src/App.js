@@ -22,9 +22,9 @@ function App() {
       <ItemsList />
       <br />
       <br />
-      <p style={{textAlign: 'center' }}>Template v4 is connected from the UI to a firebase data store.</p>
+      <p style={{textAlign: 'center' }}>Template is connected to a Firebase Realtime data store.</p>
       <ul style={{marginLeft: '41%'}}>
-        <li>Firebase Firestore</li>
+        <li>Firebase Realtime Database</li>
         <li>Node</li>
         <li>Express</li>
         <li>Axios</li>

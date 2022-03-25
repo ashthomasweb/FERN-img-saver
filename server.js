@@ -3,25 +3,14 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
-// const mongoose = require('mongoose')
 const itemRoutes = express.Router()
 let port = process.env.PORT || 4000
 let imgKey = process.env.UNSPLASH_API_KEY
 
-// let Item = require('./src/models/item.model')
 const { default: axios } = require('axios')
 
 app.use(cors())
 app.use(bodyParser.json())
-
-// change database variable to project appropriate name
-// find and replace acorss all files
-// mongoose.connect('mongodb://127.0.0.1:27017/mernTemp', { useNewUrlParser: true })
-// const connection = mongoose.connection
-
-// connection.once('open', function () {
-//   console.log('Local MongoDB database connection successfully established here')
-// })
 
 function resAllWithMessage(message, res, objData) {
   res.json({message, objData})
@@ -29,11 +18,11 @@ function resAllWithMessage(message, res, objData) {
 
 itemRoutes.route('/').get(function (req, res) {
   console.log('home route')
-  axios.get('https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json').then((response) => {
-    let objData = response.data
-    console.log(objData)
-    resAllWithMessage('Firebase Realtime DB retrieval success!', res)
-  })
+  // axios.get('https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json').then((response) => {
+  //   let objData = response.data
+  //   console.log(objData)
+  //   resAllWithMessage('Firebase Realtime DB retrieval success!', res, objData)
+  // })
 })
 
 itemRoutes.route('/item/:id').get(function (req, res) {
@@ -54,23 +43,6 @@ itemRoutes.route('/item/:id').get(function (req, res) {
 itemRoutes.route('/update/:id').post(function (req, res) {
   console.log(req.params.id)
   
-  
-  // Item.findById(req.params.id, function (error, item) {
-  //   if (!item) res.status(404).send('No data with that ID found')
-  //   else {
-  //     const { description, comment, rating, imageURL, photographer } = req.body
-  //     item.description = description
-  //     item.comment = comment
-  //     item.rating = rating
-  //     item.imageURL = imageURL
-  //     item.photographer = photographer
-  //   }
-  //   item.save()
-  //     .then(() => resAllWithMessage('Updated!', res))
-  //     .catch((error) => {
-  //       res.status(400).send('Update not possible')
-  //     })
-  // })
 })
 
 itemRoutes.route('/add').post(function (req, res) {
@@ -79,7 +51,6 @@ itemRoutes.route('/add').post(function (req, res) {
   .then((response) => {
     console.log(response)
     let objData
-
     axios.get(url).then((response) => {
       objData = Object.values(response.data)
       resAllWithMessage('Successfully added!', res, objData)
