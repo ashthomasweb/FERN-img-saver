@@ -27,7 +27,7 @@ function CreateItem() {
   }, [dispatch])
 
   function imageRetrieval() {
-    axios.get('https://boiling-fortress-67500.herokuapp.com/mernTemp/image').then((response) => {
+    axios.get('https://fern-stack-rtdb-image-crud.herokuapp.com/mernTemp/image').then((response) => {
       dispatch({ type: 'SET_RANDOM_IMAGE', payload: response.data })
     })
   }
@@ -45,7 +45,7 @@ function CreateItem() {
     e.preventDefault()
     // send form data to server 'create' route
     createItemWithUID(tempItem)
-    axios.post('https://boiling-fortress-67500.herokuapp.com/mernTemp/add', tempItem).then((response) => {
+    axios.post('https://fern-stack-rtdb-image-crud.herokuapp.com/mernTemp/add', tempItem).then((response) => {
       let objData = Object.values(response.data)
       dispatch({ type: 'SET_ALL_ITEMS', payload: objData[1] })
     })
