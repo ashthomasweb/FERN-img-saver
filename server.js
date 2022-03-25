@@ -1,14 +1,17 @@
 require('dotenv').config()
 const express = require('express')
+const path = require('path')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const itemRoutes = express.Router()
+
 let port = process.env.PORT || 4000
 let imgKey = process.env.UNSPLASH_API_KEY
 
 const { default: axios } = require('axios')
 
+app.use(express.static(path.join(__dirname, 'build')))
 app.use(cors())
 app.use(bodyParser.json())
 
