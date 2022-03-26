@@ -4,6 +4,7 @@ import { MainContext } from '../../context/main/MainState'
 import { useAxiosOnLoad } from '../../utils/axios-utils'
 import axios from 'axios'
 import { withRoutedProps } from '../../hocs/hocs'
+const serverURL = process.env.REACT_APP_SERVER_URL
 
 // individual data item component to be .map() into by parent component ItemList, defined below
 const Item = (props) => {
@@ -12,34 +13,10 @@ const Item = (props) => {
 
   function deleteItem() {
     let id = item._id
-
-    let firebaseID
-    axios.get('https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json').then((response) => {
-      let dataObj = Object.entries(response.data)
-      dataObj.forEach(item => {
-        if (item[1]._id === id) {
-          firebaseID = item[0]
-        }
-      })
-    }).then(() => {
-      axios
-      .delete(`https://next-ts-img-crud-default-rtdb.firebaseio.com/branch/${firebaseID}.json`).then(() => {
-        dispatch({ type: 'CLEAR_ITEM' })
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-      .finally(() => {
-        let url = 'https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json'
-        axios.get(url).then((response) => {
-          let objData
-          response.data && (objData = Object.values(response.data))
-          dispatch({ type: 'SET_ALL_ITEMS', payload: objData })
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-      })
+    axios.post(`${serverURL}/mernTemp/delete/${id}`).then((response) => {
+      let objData = Object.values(response.data)
+      dispatch({ type: 'SET_ALL_ITEMS', payload: objData[1] })
+      props.nav('/')
     })
   }
 

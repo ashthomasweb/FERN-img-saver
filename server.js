@@ -8,7 +8,7 @@ const itemRoutes = express.Router()
 const { default: axios } = require('axios')
 let imgKey = process.env.UNSPLASH_API_KEY
 let port = process.env.PORT || 4000
-
+const firebaseURL = 'https://next-ts-img-crud-default-rtdb.firebaseio.com'
 
 
 app.use(express.static(path.join(__dirname, 'build')))
@@ -21,11 +21,6 @@ function resAllWithMessage(message, res, objData) {
 
 itemRoutes.route('/').get(function (req, res) {
   console.log('home route')
-  // axios.get('https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json').then((response) => {
-  //   let objData = response.data
-  //   console.log(objData)
-  //   resAllWithMessage('Firebase Realtime DB retrieval success!', res, objData)
-  // })
 })
 
 itemRoutes.route('/item/:id').get(function (req, res) {
@@ -44,31 +39,86 @@ itemRoutes.route('/item/:id').get(function (req, res) {
 })
 
 itemRoutes.route('/update/:id').post(function (req, res) {
-  console.log(req.params.id)
-  
+  const { description, comment, rating, imageURL, photographer, _id } = req.body
+  let tempItem = {
+    description: description,
+    comment: comment,
+    rating: rating,
+    imageURL: imageURL,
+    photographer: photographer,
+    _id: _id
+  }
+
+  let id = req.params.id
+  let firebaseID
+  let objData
+  // get all then match for fbID
+  axios
+    .get(`${firebaseURL}/branch.json`)
+    .then((response) => {
+      let dataObj = Object.entries(response.data)
+      dataObj.forEach(item => {
+        if (item[1]._id === id) {
+          firebaseID = item[0]
+        }
+      })
+    })
+    .then(() => {
+      axios
+      .patch(`${firebaseURL}/branch/${firebaseID}.json`, tempItem)
+      .catch((error) => console.log(error))
+      // get all again after update and display
+    .then(() => {
+      axios
+      .get(`${firebaseURL}/branch.json`).then((response) => {
+        response.data && (objData = Object.values(response.data))
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        resAllWithMessage('Successfully updated!', res, objData)
+      })
+    })
+  })
 })
 
 itemRoutes.route('/add').post(function (req, res) {
-  let url = 'https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json'
-  axios.post(url, req.body)
+  let objData
+  axios.post(`${firebaseURL}/branch.json`, req.body)
   .then((response) => {
-    console.log(response)
-    let objData
-    axios.get(url).then((response) => {
+    axios.get(`${firebaseURL}/branch.json`).then((response) => {
       objData = Object.values(response.data)
       resAllWithMessage('Successfully added!', res, objData)
     })
   })
 })
 
-// itemRoutes.route('/delete/:id').post(function (req, res) {
-//   let _id = req.params.id
-//   Item.deleteOne({ _id })
-//     .then(() => resAllWithMessage('Deleted!', res))
-//     .catch((error) => {
-//       res.status(400).send('Deleting new item failed')
-//     })
-// })
+itemRoutes.route('/delete/:id').post(function (req, res) {
+  let id = req.params.id
+  let objData
+  let firebaseID
+  axios.get(`${firebaseURL}/branch.json`).then((response) => {
+    let dataObj = Object.entries(response.data)
+    dataObj.forEach(item => {
+      if (item[1]._id === id) {
+        firebaseID = item[0]
+      }
+    })
+  }).then(() => {
+    axios
+    .delete(`${firebaseURL}/branch/${firebaseID}.json`).then(() => {
+    })
+    .catch((error) => console.log(error))
+    .then(() => {
+      axios.get(`${firebaseURL}/branch.json`).then((response) => {
+        response.data && (objData = Object.values(response.data))
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        resAllWithMessage('Successfully deleted!', res, objData)
+      })
+    })
+  })
+})
 
 itemRoutes.route('/image/').get(function (req, res) {
   let url = `https://api.unsplash.com/photos/random/?client_id=${imgKey}`

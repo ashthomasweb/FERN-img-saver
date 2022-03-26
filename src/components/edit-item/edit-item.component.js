@@ -3,6 +3,7 @@ import axios from 'axios'
 import { withRoutedProps } from '../../hocs/hocs'
 import { useAxiosOnEditLoad } from '../../utils/axios-utils'
 import { MainContext } from '../../context/main/MainState'
+const serverURL = process.env.REACT_APP_SERVER_URL
 
 function EditItem(props) {
   // destructure state and reducer methods
@@ -30,34 +31,9 @@ function EditItem(props) {
   // data handling
   function onSubmit(e) {
     e.preventDefault()
-
-    let firebaseID
-    axios.get('https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json').then((response) => {
-      let dataObj = Object.entries(response.data)
-      dataObj.forEach(item => {
-        if (item[1]._id === id) {
-          firebaseID = item[0]
-        }
-      })
-    }).then(() => {
-      axios
-      .patch(`https://next-ts-img-crud-default-rtdb.firebaseio.com/branch/${firebaseID}.json`, tempItem).then(() => {
-        dispatch({ type: 'CLEAR_ITEM' })
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-      .finally(() => {
-        let url = 'https://next-ts-img-crud-default-rtdb.firebaseio.com/branch.json'
-        axios.get(url).then((response) => {
-          let objData
-          response.data && (objData = Object.values(response.data))
-          dispatch({ type: 'SET_ALL_ITEMS', payload: objData })
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
-      })
+    axios.post(`${serverURL}/mernTemp/update/${id}`, tempItem).then((response) => {
+      let objData = Object.values(response.data)
+      dispatch({ type: 'SET_ALL_ITEMS', payload: objData[1] })
     })
   }
 

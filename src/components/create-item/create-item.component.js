@@ -46,7 +46,7 @@ function CreateItem() {
     e.preventDefault()
     // send form data to server 'create' route
     createItemWithUID(tempItem)
-    axios.post('https://fern-stack-rtdb-image-crud.herokuapp.com/mernTemp/add', tempItem).then((response) => {
+    axios.post(`${serverURL}/mernTemp/add`, tempItem).then((response) => {
       let objData = Object.values(response.data)
       dispatch({ type: 'SET_ALL_ITEMS', payload: objData[1] })
     })

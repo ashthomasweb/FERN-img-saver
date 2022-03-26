@@ -12,7 +12,8 @@ const MainState = (props) => {
       comment: '',
       rating: '',
       imageURL: '',
-      photographer: ''
+      photographer: '',
+      
     },
   }
 

@@ -19,6 +19,7 @@ export const mainReducer = (state, action) => {
                 rating: item.rating,
                 imageURL: item.imageURL,
                 photographer: item.photographer,
+                _id: item._id
                 }
             return {
                 ...state,
