@@ -13,7 +13,7 @@ const Item = (props) => {
 
   function deleteItem() {
     let id = item._id
-    axios.post(`${serverURL}/mernTemp/delete/${id}`).then((response) => {
+    axios.post(`${serverURL}/delete/${id}`).then((response) => {
       let objData = Object.values(response.data)
       dispatch({ type: 'SET_ALL_ITEMS', payload: objData[1] })
       props.nav('/')
