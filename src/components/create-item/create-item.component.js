@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import axios from 'axios'
 import { MainContext } from '../../context/main/MainState'
+const serverURL = process.env.REACT_APP_SERVER_URL
 
 function CreateItem() {
   const { state: { tempItem }, dispatch } = useContext(MainContext)
@@ -27,7 +28,7 @@ function CreateItem() {
   }, [dispatch])
 
   function imageRetrieval() {
-    axios.get('https://fern-stack-rtdb-image-crud.herokuapp.com/mernTemp/image').then((response) => {
+    axios.get(`${serverURL}/image`).then((response) => {
       dispatch({ type: 'SET_RANDOM_IMAGE', payload: response.data })
     })
   }

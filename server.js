@@ -5,11 +5,12 @@ const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const itemRoutes = express.Router()
-
-let port = process.env.PORT || 4000
-let imgKey = process.env.UNSPLASH_API_KEY
-
 const { default: axios } = require('axios')
+let imgKey = process.env.UNSPLASH_API_KEY
+let serverURL = process.env.SERVER_URL
+let port = process.env.PORT || 4000
+
+
 
 app.use(express.static(path.join(__dirname, 'build')))
 app.use(cors())
