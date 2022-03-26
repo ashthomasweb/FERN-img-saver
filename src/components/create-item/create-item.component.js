@@ -28,7 +28,7 @@ function CreateItem() {
   }, [dispatch])
 
   function imageRetrieval() {
-    axios.get(`${serverURL}/image`).then((response) => {
+    axios.get(`${serverURL}/mernTemp/image`).then((response) => {
       dispatch({ type: 'SET_RANDOM_IMAGE', payload: response.data })
     })
   }

@@ -7,7 +7,6 @@ const cors = require('cors')
 const itemRoutes = express.Router()
 const { default: axios } = require('axios')
 let imgKey = process.env.UNSPLASH_API_KEY
-let serverURL = process.env.SERVER_URL
 let port = process.env.PORT || 4000
 
 
