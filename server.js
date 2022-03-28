@@ -127,7 +127,6 @@ itemRoutes.route('/image/').get(function (req, res) {
 
 app.use('/', itemRoutes)
 
-// Listener compatible with Heroku, Localhost
 app.listen(port, () => console.log(`Server accessible at port ${port}.`))
 
 // END of document

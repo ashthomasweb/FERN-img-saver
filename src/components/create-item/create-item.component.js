@@ -57,13 +57,6 @@ function CreateItem() {
     <div style={{ margin: '10px auto', width: '95vw' }}>
       <h3 style={{ textAlign: 'center' }}>Create New Item</h3>
 
-      { imageURL && 
-          <div style={{ textAlign: 'center', width: '40vw', margin: '0 auto', position: 'relative'}}>
-            <img src={imageURL} style={{width: '100%', position: 'relative'}} alt='no alt yet'/>
-            <p>Photo by {photographer}, courtesy of Unsplash API</p>
-          </div>
-      }
-
       <form onSubmit={onSubmit}>
         <div className='form-group'>
           <label>Description: </label>
@@ -153,10 +146,19 @@ function CreateItem() {
           <button
             type='button'
             className='btn btn-primary'
+            style={{ marginLeft: '10px' }}
             onClick={() => imageRetrieval()}
-          >Image</button>
+          >Get Random Image</button>
         </div>
       </form>
+
+      { imageURL && 
+          <div style={{ textAlign: 'center', width: '40vw', margin: '0 auto', position: 'relative'}}>
+            <img src={imageURL} style={{width: '100%', position: 'relative'}} alt='no alt yet'/>
+            <p>Photo by {photographer}, courtesy of Unsplash API</p>
+          </div>
+      }
+
     </div>
   )
 }
